@@ -1,6 +1,7 @@
 package com.penta.security.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.penta.security.global.exception.ErrorCode;
 import com.penta.security.user.dto.response.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,13 +28,13 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException authException) throws IOException {
-        log.info("[CustomAuthenticationEntryPointHandler] :: {}", authException.getMessage());
+        AuthenticationException ex) throws IOException {
+        log.info("[CustomAuthenticationEntryPointHandler] :: {}", ex.getMessage());
         log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRequestURL());
         log.info("[CustomAuthenticationEntryPointHandler] :: 토큰 정보가 만료되었거나 존재하지 않습니다.");
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(300,
-            authException.getMessage(), LocalDateTime.now());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_TOKEN_INVALID,
+            ex.getMessage(), LocalDateTime.now());
 
         String responseBody = objectMapper.writeValueAsString(errorResponseDto);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

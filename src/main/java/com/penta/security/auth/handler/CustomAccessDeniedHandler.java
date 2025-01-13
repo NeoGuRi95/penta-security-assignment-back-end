@@ -1,6 +1,7 @@
 package com.penta.security.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.penta.security.global.exception.ErrorCode;
 import com.penta.security.user.dto.response.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,13 +27,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-        AccessDeniedException accessDeniedException) throws IOException {
-        log.info("[CustomAccessDeniedHandler] :: {}", accessDeniedException.getMessage());
+        AccessDeniedException ex) throws IOException {
+        log.info("[CustomAccessDeniedHandler] :: {}", ex.getMessage());
         log.info("[CustomAccessDeniedHandler] :: {}", request.getRequestURL());
         log.info("[CustomAccessDeniedHandler] :: 해당 권한으로는 접근할 수 없습니다.");
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(300,
-            accessDeniedException.getMessage(), LocalDateTime.now());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_DENIED,
+            ex.getMessage(), LocalDateTime.now());
 
         String responseBody = objectMapper.writeValueAsString(errorResponseDto);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

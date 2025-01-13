@@ -1,6 +1,7 @@
 package com.penta.security.user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.penta.security.global.exception.ErrorCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponseDto {
 
-    private final int errorCode;
+    private final ErrorCode errorCode;
 
     private final String message;
 

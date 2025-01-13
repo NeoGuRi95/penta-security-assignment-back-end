@@ -1,5 +1,6 @@
 package com.penta.security.global.exception.handler;
 
+import com.penta.security.global.exception.ErrorCode;
 import com.penta.security.global.exception.PasswordIncorrectException;
 import com.penta.security.global.exception.RefreshTokenInvalidException;
 import com.penta.security.global.exception.UserIdNotFoundException;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
         HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(100, ex.getMessage(),
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage(),
             LocalDateTime.now());
 
         return ResponseEntity.status(statusCode).body(errorResponseDto);
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(RuntimeException ex) {
         log.error("Internal Server Error occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(100, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage(),
             LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
@@ -66,16 +67,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         WebRequest request) {
         log.error("Method Argument Not Valid Exception occurred", ex);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
-            200,
+        ErrorResponseDto body = new ErrorResponseDto(
+            ErrorCode.METHOD_ARGUMENT_INVALID,
             "요청 데이터가 유효하지 않습니다. validErrors 필드를 확인하세요.", LocalDateTime.now());
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            errorResponseDto.addValidationError(fieldError.getField(),
+            body.addValidationError(fieldError.getField(),
                 fieldError.getDefaultMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
     }
 
     /**
@@ -88,7 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.error("Authorization Denied Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(300, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.ACCESS_DENIED, ex.getMessage(),
             LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
@@ -104,10 +105,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleRefreshTokenInvalidException(RefreshTokenInvalidException ex) {
         log.error("Refresh Token Invalid Exception occurred", ex);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(301, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.REFRESH_TOKEN_INVALID, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     /**
@@ -120,10 +121,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         log.error("Username Not Found Exception occurred", ex);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(302, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.USERNAME_NOT_FOUND, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     /**
@@ -136,10 +137,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleUserIdNotFoundException(UserIdNotFoundException ex) {
         log.error("User Id Not Found Exception occurred", ex);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(303, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.USER_ID_NOT_FOUND, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     /**
@@ -152,9 +153,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handlePasswordIncorrectException(PasswordIncorrectException ex) {
         log.error("Password Incorrect Exception occurred", ex);
 
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(304, ex.getMessage(),
+        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.PASSWORD_INCORRECT, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 }
