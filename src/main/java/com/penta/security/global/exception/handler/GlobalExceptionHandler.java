@@ -65,6 +65,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status,
         WebRequest request) {
         log.error("Method Argument Not Valid Exception occurred", ex);
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
             200,
             "요청 데이터가 유효하지 않습니다. validErrors 필드를 확인하세요.", LocalDateTime.now());
@@ -78,7 +79,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * 사용자 권한 검증 예외 처리
+     * 접근 권한 예외 처리
      *
      * @param ex      AuthorizationDeniedException
      * @return ErrorResponse 응답
@@ -97,13 +98,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Refresh Token 유효성 검증 예외 처리
      *
      * @param ex      RefreshTokenInvalidException
-     * @param request 요청
      * @return ErrorResponse 응답
      */
     @ExceptionHandler(RefreshTokenInvalidException.class)
-    public ResponseEntity<ErrorResponseDto> handleRefreshTokenInvalidException(RefreshTokenInvalidException ex,
-        WebRequest request) {
+    public ResponseEntity<ErrorResponseDto> handleRefreshTokenInvalidException(RefreshTokenInvalidException ex) {
         log.error("Refresh Token Invalid Exception occurred", ex);
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(301, ex.getMessage(),
             LocalDateTime.now());
 
@@ -114,13 +114,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Access Token 회원 ID 찾지 못한 경우 예외 처리
      *
      * @param ex      UsernameNotFoundException
-     * @param request 요청
      * @return ErrorResponse 응답
      */
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(UsernameNotFoundException ex,
-        WebRequest request) {
+    public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         log.error("Username Not Found Exception occurred", ex);
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(302, ex.getMessage(),
             LocalDateTime.now());
 
@@ -131,13 +130,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * 로그인에서 회원 ID 찾지 못한 경우 예외 처리
      *
      * @param ex      UserIdNotFoundException
-     * @param request 요청
      * @return ErrorResponse 응답
      */
     @ExceptionHandler(UserIdNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserIdNotFoundException(UserIdNotFoundException ex,
-        WebRequest request) {
+    public ResponseEntity<ErrorResponseDto> handleUserIdNotFoundException(UserIdNotFoundException ex) {
         log.error("User Id Not Found Exception occurred", ex);
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(303, ex.getMessage(),
             LocalDateTime.now());
 
@@ -148,13 +146,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * 비밀번호 불일치 예외 처리
      *
      * @param ex      PasswordIncorrectException
-     * @param request 요청
      * @return ErrorResponse 응답
      */
     @ExceptionHandler(PasswordIncorrectException.class)
-    public ResponseEntity<ErrorResponseDto> handlePasswordIncorrectException(PasswordIncorrectException ex,
-        WebRequest request) {
+    public ResponseEntity<ErrorResponseDto> handlePasswordIncorrectException(PasswordIncorrectException ex) {
         log.error("Password Incorrect Exception occurred", ex);
+
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(304, ex.getMessage(),
             LocalDateTime.now());
 
