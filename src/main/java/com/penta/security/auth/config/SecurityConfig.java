@@ -1,7 +1,7 @@
 package com.penta.security.auth.config;
 
 import com.penta.security.auth.handler.CustomAccessDeniedHandler;
-import com.penta.security.auth.handler.CustomAuthenticationEntryPointHandler;
+import com.penta.security.auth.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
@@ -26,7 +27,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
-    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
@@ -51,6 +52,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain config(HttpSecurity http, HandlerMappingIntrospector introspector)
         throws Exception {
+        MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector);
+
+        // white list (Spring Security 체크 제외 목록)
+        MvcRequestMatcher[] permitAllWhiteList = {
+            mvc.pattern("/auth/login"),
+            mvc.pattern("/auth/refresh"),
+            mvc.pattern("/auth/register")
+        };
 
         // form login disable
         http.formLogin(AbstractHttpConfigurer::disable);
@@ -71,14 +80,14 @@ public class SecurityConfig {
 
         // exception handler
         http.exceptionHandling(conf -> conf
-            .authenticationEntryPoint(customAuthenticationEntryPointHandler)
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
             .accessDeniedHandler(customAccessDeniedHandler)
         );
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
-            // @Secured 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-            .anyRequest().permitAll()
+            .requestMatchers(permitAllWhiteList).permitAll()
+            .anyRequest().authenticated()
         );
 
         // build

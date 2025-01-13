@@ -39,16 +39,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * 모든 예외 처리
      *
      * @param ex      발생한 예외
-     * @param request 요청
      * @return ErrorResponse 응답
      */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(Exception ex, WebRequest request) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(RuntimeException ex) {
         log.error("Internal Server Error occurred", ex);
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(100, ex.getMessage(),
+
+        ErrorResponseDto body = new ErrorResponseDto(100, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
     /**
@@ -78,20 +78,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * 인증 실패 예외 처리
+     * 사용자 권한 검증 예외 처리
      *
      * @param ex      AuthorizationDeniedException
-     * @param request 요청
-     * @return 인ErrorResponse 응답
+     * @return ErrorResponse 응답
      */
     @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<ErrorResponseDto> handleAuthorizationDeniedException(AuthorizationDeniedException ex,
-        WebRequest request) {
+    public ResponseEntity<ErrorResponseDto> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.error("Authorization Denied Exception occurred", ex);
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto(300, ex.getMessage(),
+
+        ErrorResponseDto body = new ErrorResponseDto(300, ex.getMessage(),
             LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDto);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
     /**
