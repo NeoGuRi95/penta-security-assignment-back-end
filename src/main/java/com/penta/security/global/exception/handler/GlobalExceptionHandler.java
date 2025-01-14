@@ -5,7 +5,6 @@ import com.penta.security.global.exception.PasswordIncorrectException;
 import com.penta.security.global.exception.RefreshTokenInvalidException;
 import com.penta.security.global.exception.UserIdNotFoundException;
 import com.penta.security.user.dto.response.ErrorResponseDto;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +35,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(statusCode).body(errorResponseDto);
     }
 
+    private ResponseEntity<ErrorResponseDto> buildErrorResponseEntity(ErrorCode errorCode,
+        String message) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(errorCode, message);
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+    }
+
     /**
      * 모든 예외 처리
      *
@@ -46,10 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleAllUncaughtException(RuntimeException ex) {
         log.error("Internal Server Error occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.INTERNAL_SERVER_ERROR,
-            ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        return buildErrorResponseEntity(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     /**
@@ -67,15 +69,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         WebRequest request) {
         log.error("Method Argument Not Valid Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.METHOD_ARGUMENT_INVALID,
+        ErrorCode errorCode = ErrorCode.METHOD_ARGUMENT_INVALID;
+
+        ErrorResponseDto body = new ErrorResponseDto(errorCode,
             "요청 데이터가 유효하지 않습니다. validErrors 필드를 확인하세요.");
 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
-            body.addValidationError(fieldError.getField(),
-                fieldError.getDefaultMessage());
+            body.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(body);
     }
 
     /**
@@ -89,9 +92,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         AuthorizationDeniedException ex) {
         log.error("Authorization Denied Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.ACCESS_DENIED, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+        return buildErrorResponseEntity(ErrorCode.ACCESS_DENIED, ex.getMessage());
     }
 
     /**
@@ -105,10 +106,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         RefreshTokenInvalidException ex) {
         log.error("Refresh Token Invalid Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.REFRESH_TOKEN_INVALID,
-            ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        return buildErrorResponseEntity(ErrorCode.REFRESH_TOKEN_INVALID, ex.getMessage());
     }
 
     /**
@@ -122,9 +120,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         UsernameNotFoundException ex) {
         log.error("Username Not Found Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.USERNAME_NOT_FOUND, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        return buildErrorResponseEntity(ErrorCode.USERNAME_NOT_FOUND, ex.getMessage());
     }
 
     /**
@@ -138,9 +134,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         UserIdNotFoundException ex) {
         log.error("User Id Not Found Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.USER_ID_NOT_FOUND, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        return buildErrorResponseEntity(ErrorCode.USER_ID_NOT_FOUND, ex.getMessage());
     }
 
     /**
@@ -154,8 +148,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         PasswordIncorrectException ex) {
         log.error("Password Incorrect Exception occurred", ex);
 
-        ErrorResponseDto body = new ErrorResponseDto(ErrorCode.PASSWORD_INCORRECT, ex.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        return buildErrorResponseEntity(ErrorCode.PASSWORD_INCORRECT, ex.getMessage());
     }
 }
