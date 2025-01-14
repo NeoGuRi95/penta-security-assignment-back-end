@@ -1,4 +1,4 @@
-package com.penta.security.user.dto.response;
+package com.penta.security.global.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.penta.security.global.exception.ErrorCode;

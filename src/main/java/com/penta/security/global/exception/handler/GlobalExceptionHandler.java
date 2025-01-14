@@ -2,7 +2,7 @@ package com.penta.security.global.exception.handler;
 
 import com.penta.security.global.exception.ErrorCode;
 import com.penta.security.global.exception.ErrorCodeMapper;
-import com.penta.security.user.dto.response.ErrorResponseDto;
+import com.penta.security.global.dto.response.ErrorResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
