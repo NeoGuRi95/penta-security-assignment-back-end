@@ -6,7 +6,6 @@ import com.penta.security.user.dto.response.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,9 +27,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
         AccessDeniedException ex) throws IOException {
-        log.info("[CustomAccessDeniedHandler] :: {}", ex.getMessage());
-        log.info("[CustomAccessDeniedHandler] :: {}", request.getRequestURL());
-        log.info("[CustomAccessDeniedHandler] :: 해당 권한으로는 접근할 수 없습니다.");
+        log.error("[CustomAccessDeniedHandler] :: {}", ex.getMessage());
+        log.error("[CustomAccessDeniedHandler] :: {}", request.getRequestURL());
+        log.error("[CustomAccessDeniedHandler] :: 해당 권한으로는 접근할 수 없습니다.");
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_DENIED,
             ex.getMessage());

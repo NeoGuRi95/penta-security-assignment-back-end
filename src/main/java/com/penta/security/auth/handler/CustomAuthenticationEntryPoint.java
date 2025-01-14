@@ -5,7 +5,6 @@ import com.penta.security.global.exception.ErrorCode;
 import com.penta.security.user.dto.response.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException ex) throws IOException {
-        log.info("[CustomAuthenticationEntryPointHandler] :: {}", ex.getMessage());
-        log.info("[CustomAuthenticationEntryPointHandler] :: {}", request.getRequestURL());
-        log.info("[CustomAuthenticationEntryPointHandler] :: 토큰 정보가 만료되었거나 존재하지 않습니다.");
+        log.error("[CustomAuthenticationEntryPointHandler] :: {}", ex.getMessage());
+        log.error("[CustomAuthenticationEntryPointHandler] :: {}", request.getRequestURL());
+        log.error("[CustomAuthenticationEntryPointHandler] :: 토큰 정보가 만료되었거나 존재하지 않습니다.");
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_TOKEN_INVALID,
             ex.getMessage());
