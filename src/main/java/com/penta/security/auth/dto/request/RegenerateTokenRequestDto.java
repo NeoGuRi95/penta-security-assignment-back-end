@@ -13,7 +13,7 @@ import lombok.Setter;
 public class RegenerateTokenRequestDto {
 
     @NotEmpty(message = "아이디는 필수항목입니다.")
-    @Size(max=30)
+    @Size(max = 30)
     private String userId;
 
     @NotEmpty(message = "리프레쉬 토큰은 필수항목입니다.")

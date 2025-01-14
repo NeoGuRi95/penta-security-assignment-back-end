@@ -22,7 +22,6 @@ public class CustomUserDetails implements UserDetails {
         List<String> roles = new ArrayList<>();
         roles.add(systemUser.getUserAuth());
 
-
         return roles.stream()
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
@@ -58,7 +57,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 
 }

@@ -33,8 +33,8 @@ public class ErrorResponseDto {
         this.time = LocalDateTime.now();
     }
 
-    public void addValidationError(String field, String message){
-        if(Objects.isNull(validErrors)){
+    public void addValidationError(String field, String message) {
+        if (Objects.isNull(validErrors)) {
             validErrors = new ArrayList<>();
         }
         validErrors.add(new ValidationError(field, message));

@@ -61,7 +61,8 @@ public class SystemUserService {
         sorts.add(Sort.Order.desc("userIdx"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-        Page<SystemUser> systemUserPage = systemUserRepository.findAllBySearchWord(searchWord, pageable);
+        Page<SystemUser> systemUserPage = systemUserRepository.findAllBySearchWord(searchWord,
+            pageable);
 
         return systemUserPage.map(SystemUserResponseDto::new);
     }

@@ -13,6 +13,6 @@ import lombok.Setter;
 public class SystemUserUpdateRequestDto {
 
     @NotEmpty(message = "이름은 필수항목입니다.")
-    @Size(max=100)
+    @Size(max = 100)
     public String userNm;
 }
