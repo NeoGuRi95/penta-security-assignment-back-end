@@ -33,7 +33,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         log.info("[CustomAccessDeniedHandler] :: 해당 권한으로는 접근할 수 없습니다.");
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_DENIED,
-            ex.getMessage(), LocalDateTime.now());
+            ex.getMessage());
 
         String responseBody = objectMapper.writeValueAsString(errorResponseDto);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

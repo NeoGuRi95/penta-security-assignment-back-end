@@ -16,7 +16,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponseDto {
 
@@ -27,6 +26,12 @@ public class ErrorResponseDto {
     private final LocalDateTime time;
 
     private List<ValidationError> validErrors;
+
+    public ErrorResponseDto(ErrorCode errorCode, String message) {
+        this.errorCode = errorCode;
+        this.message = message;
+        this.time = LocalDateTime.now();
+    }
 
     public void addValidationError(String field, String message){
         if(Objects.isNull(validErrors)){

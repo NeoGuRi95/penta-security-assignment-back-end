@@ -34,7 +34,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.info("[CustomAuthenticationEntryPointHandler] :: 토큰 정보가 만료되었거나 존재하지 않습니다.");
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.ACCESS_TOKEN_INVALID,
-            ex.getMessage(), LocalDateTime.now());
+            ex.getMessage());
 
         String responseBody = objectMapper.writeValueAsString(errorResponseDto);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
