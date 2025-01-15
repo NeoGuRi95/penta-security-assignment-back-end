@@ -91,10 +91,11 @@ public class AuthService {
      *
      * @param requestDto 토큰 갱신 요청 DTO
      * @return 토큰 응답 DTO
-     * @throws RuntimeException 리프레쉬 토큰이 유효하지 않은 경우 발생하는 예외
+     * @throws RefreshTokenInvalidException 리프레쉬 토큰이 유효하지 않은 경우 발생하는 예외
      */
     @Transactional
-    public TokenResponseDto regenerateToken(RegenerateTokenRequestDto requestDto) {
+    public TokenResponseDto regenerateToken(RegenerateTokenRequestDto requestDto)
+        throws RefreshTokenInvalidException {
         String userId = requestDto.getUserId();
 
         // refresh token 유효성 검증

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,15 +57,25 @@ public class SystemUserService {
      * @param searchWord 검색어
      * @return 회원 목록
      */
-    public Page<SystemUserResponseDto> getSystemUserList(int page, String searchWord) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("userIdx"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+    public Page<SystemUserResponseDto> getSystemUserList(String searchWord, int lastUserIdx, int page) {
+        List<SystemUser> users;
+        if (lastUserIdx == 0) {
+            users = systemUserRepository.findFirstPageBySearchWord(searchWord, 10);
+        } else {
+            users = systemUserRepository.findPageBySearchWordWithLastUserIdx(
+                searchWord,
+                lastUserIdx,
+                10
+            );
+        }
 
-        Page<SystemUser> systemUserPage = systemUserRepository.findAllBySearchWord(searchWord,
-            pageable);
+        int totalElements = systemUserRepository.countUsersBySearchWord(searchWord);
 
-        return systemUserPage.map(SystemUserResponseDto::new);
+        List<SystemUserResponseDto> responseDtos = users.stream()
+            .map(SystemUserResponseDto::new)
+            .toList();
+
+        return new PageImpl<>(responseDtos, PageRequest.of(page, 10), totalElements);
     }
 
     /**
@@ -74,12 +85,9 @@ public class SystemUserService {
      * @return 회원 응답 DTO
      */
     public SystemUserResponseDto create(SystemUserCreateRequestDto requestDto) {
-        SystemUser systemUser = SystemUser.builder()
-            .userId(requestDto.getUserId())
+        SystemUser systemUser = SystemUser.builder().userId(requestDto.getUserId())
             .userPw(bCryptPasswordEncoder.encode(requestDto.getUserPw()))
-            .userNm(requestDto.getUserNm())
-            .userAuth("SYSTEM_USER")
-            .build();
+            .userNm(requestDto.getUserNm()).userAuth("SYSTEM_USER").build();
 
         SystemUser createdSystemUser = systemUserRepository.save(systemUser);
 
