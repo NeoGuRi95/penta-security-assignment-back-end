@@ -10,7 +10,7 @@ import com.penta.security.global.exception.PasswordIncorrectException;
 import com.penta.security.global.exception.RefreshTokenInvalidException;
 import com.penta.security.user.dto.response.SystemUserResponseDto;
 import com.penta.security.entity.SystemUser;
-import com.penta.security.auth.jwt.JwtProvider;
+import com.penta.security.global.utils.JwtUtil;
 import com.penta.security.user.service.SystemUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -29,7 +29,7 @@ public class AuthService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
 
     private final RefreshTokenStore refreshTokenStore;
 
@@ -52,13 +52,13 @@ public class AuthService {
 
         // jwt 토큰 생성
         String userId = systemUser.getUserId();
-        String accessToken = jwtProvider.generateAccessToken(userId);
+        String accessToken = jwtUtil.generateAccessToken(userId);
 
         // 기존에 가지고 있는 사용자의 refresh token 제거
         refreshTokenStore.remove(userId);
 
         // refresh token 생성 후 저장
-        String refreshToken = jwtProvider.generateRefreshToken(userId);
+        String refreshToken = jwtUtil.generateRefreshToken(userId);
         refreshTokenStore.put(userId, refreshToken);
 
         LoginResponseDto responseDto = new LoginResponseDto();
@@ -100,7 +100,7 @@ public class AuthService {
 
         // refresh token 유효성 검증
         String requestedRefreshToken = requestDto.getRefreshToken();
-        if (!jwtProvider.validateToken(requestedRefreshToken)) {
+        if (!jwtUtil.validateToken(requestedRefreshToken)) {
             throw new RefreshTokenInvalidException("리프레쉬 토큰이 유효하지 않습니다.");
         }
         // 서버에 저장된 refresh token 동일한지 확인
@@ -110,8 +110,8 @@ public class AuthService {
         }
 
         // 새로운 access, refresh token 생성
-        String newAccessToken = jwtProvider.generateAccessToken(userId);
-        String newRefreshToken = jwtProvider.generateRefreshToken(userId);
+        String newAccessToken = jwtUtil.generateAccessToken(userId);
+        String newRefreshToken = jwtUtil.generateRefreshToken(userId);
 
         // 리프레쉬 토큰 갱신
         refreshTokenStore.put(userId, newRefreshToken);

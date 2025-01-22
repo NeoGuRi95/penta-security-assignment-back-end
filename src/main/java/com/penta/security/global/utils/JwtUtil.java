@@ -1,4 +1,4 @@
-package com.penta.security.auth.jwt;
+package com.penta.security.global.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -19,7 +19,7 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class JwtProvider {
+public class JwtUtil {
 
     // Access Token 만료 시간 1시간
     private static final long ACCESS_TOKEN_VALID_TIME = (long) 1000 * 60 * 60;
