@@ -7,7 +7,7 @@ import lombok.*;
 @Table(name = "employee_docs")
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class EmployeeDoc {

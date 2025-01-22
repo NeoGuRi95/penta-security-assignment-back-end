@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @ToString
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class DeptEmp {

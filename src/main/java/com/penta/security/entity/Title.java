@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Table(name = "titles")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Title {

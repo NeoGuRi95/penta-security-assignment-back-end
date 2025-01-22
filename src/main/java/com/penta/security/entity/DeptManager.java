@@ -8,7 +8,7 @@ import lombok.*;
 @Table(name = "dept_manager")
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class DeptManager {

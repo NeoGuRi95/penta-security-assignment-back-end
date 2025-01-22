@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "departments")
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Department {

@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "employees")
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class Employee {
