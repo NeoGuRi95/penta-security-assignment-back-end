@@ -1,6 +1,6 @@
 package com.penta.security.user.dto.response;
 
-import com.penta.security.user.entity.SystemUser;
+import com.penta.security.entity.SystemUser;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,9 +1,7 @@
 package com.penta.security;
 
-import com.penta.security.user.entity.SystemUser;
+import com.penta.security.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,14 +1,14 @@
 package com.penta.security.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import lombok.*;
 import java.util.List;
 
 @Entity
 @Table(name = "employees")
 @Getter
-@ToString
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class Employee {
     private Integer empNo;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "first_name", length = 14, nullable = false)
     private String firstName;
@@ -33,19 +33,19 @@ public class Employee {
     private Gender gender;
 
     @Column(name = "hire_date", nullable = false)
-    private LocalDateTime hireDate;
+    private LocalDate hireDate;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptEmp> deptEmps;
+    private List<DeptEmp> deptEmps = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptManager> deptManagers;
+    private List<DeptManager> deptManagers = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Salary> salaries;
+    private List<Salary> salaries = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Title> titles;
+    private List<Title> titles = new ArrayList<>();
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private EmployeeDoc employeeDoc;

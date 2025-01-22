@@ -1,7 +1,7 @@
 package com.penta.security.user.aop;
 
 import com.penta.security.user.dto.response.SystemUserResponseDto;
-import com.penta.security.user.entity.UserHistory;
+import com.penta.security.entity.UserHistory;
 import com.penta.security.user.repository.UserHistoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;

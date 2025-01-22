@@ -1,6 +1,6 @@
 package com.penta.security.auth.vo;
 
-import com.penta.security.user.entity.SystemUser;
+import com.penta.security.entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

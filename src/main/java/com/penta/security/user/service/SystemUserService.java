@@ -4,17 +4,14 @@ import com.penta.security.global.exception.UserIdNotFoundException;
 import com.penta.security.user.dto.request.SystemUserCreateRequestDto;
 import com.penta.security.user.dto.request.SystemUserUpdateRequestDto;
 import com.penta.security.user.dto.response.SystemUserResponseDto;
-import com.penta.security.user.entity.SystemUser;
+import com.penta.security.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
