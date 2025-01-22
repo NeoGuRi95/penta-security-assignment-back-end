@@ -25,4 +25,10 @@ public class EmployeeName {
 
     @Column(name = "last_name", length = 16, nullable = false)
     private String lastName;
+
+    // 연관 관계 편의 메서드 start
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    // 연관 관계 편의 메서드 end
 }

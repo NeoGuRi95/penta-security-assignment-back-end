@@ -23,9 +23,31 @@ public class Department {
     @Column(name = "emp_count")
     private Integer empCount;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeptEmp> deptEmps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeptManager> deptManagers = new ArrayList<>();
+
+    // 연관 관계 편의 메서드 start
+    public void addDeptEmp(DeptEmp deptEmp) {
+        deptEmps.add(deptEmp);
+        deptEmp.setDepartment(this);
+    }
+
+    public void removeDeptEmp(DeptEmp deptEmp) {
+        deptEmps.remove(deptEmp);
+        deptEmp.setDepartment(null);
+    }
+
+    public void addDeptManager(DeptManager deptManager) {
+        deptManagers.add(deptManager);
+        deptManager.setDepartment(this);
+    }
+
+    public void removeDeptManage(DeptManager deptManager) {
+        deptManagers.remove(deptManager);
+        deptManager.setDepartment(null);
+    }
+    // 연관 관계 편의 메서드 end
 }

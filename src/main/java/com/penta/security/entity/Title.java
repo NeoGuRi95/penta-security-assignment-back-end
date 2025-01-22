@@ -21,4 +21,16 @@ public class Title {
     @ManyToOne
     @JoinColumn(name = "emp_no")
     private Employee employee;
+
+    // 연관 관계 편의 메서드 start
+    public void setEmployee(Employee employee) {
+        if (this.employee != null) {
+            this.employee.getTitles().remove(this);
+        }
+        this.employee = employee;
+        if (employee != null && !employee.getTitles().contains(this)) {
+            employee.getTitles().add(this);
+        }
+    }
+    // 연관 관계 편의 메서드 end
 }

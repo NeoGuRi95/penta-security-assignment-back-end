@@ -22,4 +22,10 @@ public class EmployeeDoc {
 
     @Column(name = "doc", columnDefinition = "json")
     private String doc;
+
+    // 연관 관계 편의 메서드 start
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    // 연관 관계 편의 메서드 end
 }

@@ -30,4 +30,26 @@ public class DeptManager {
 
     @Column(name = "to_date", nullable = false)
     private LocalDate toDate;
+
+    // 연관 관계 편의 메서드 start
+    public void setDepartment(Department department) {
+        if (this.department != null) {
+            this.department.getDeptManagers().remove(this);
+        }
+        this.department = department;
+        if (department != null && !department.getDeptManagers().contains(this)) {
+            department.getDeptManagers().add(this);
+        }
+    }
+
+    public void setEmployee(Employee employee) {
+        if (this.employee != null) {
+            this.employee.getDeptManagers().remove(this);
+        }
+        this.employee = employee;
+        if (employee != null && !employee.getDeptManagers().contains(this)) {
+            employee.getDeptManagers().add(this);
+        }
+    }
+    // 연관 관계 편의 메서드 end
 }
