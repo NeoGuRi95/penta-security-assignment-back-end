@@ -1,4 +1,4 @@
-package com.penta.security.auth.vo;
+package com.penta.security.global.vo;
 
 import com.penta.security.entity.SystemUser;
 import java.util.ArrayList;

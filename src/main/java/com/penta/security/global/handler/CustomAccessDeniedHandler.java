@@ -1,4 +1,4 @@
-package com.penta.security.auth.handler;
+package com.penta.security.global.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.penta.security.global.exception.ErrorCode;

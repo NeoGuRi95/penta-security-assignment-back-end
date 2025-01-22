@@ -1,4 +1,4 @@
-package com.penta.security.auth.config;
+package com.penta.security.global.config;
 
 import com.penta.security.auth.service.CustomUserDetailsService;
 import com.penta.security.auth.jwt.JwtProvider;

@@ -1,4 +1,4 @@
-package com.penta.security.auth.vo;
+package com.penta.security.global.vo;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

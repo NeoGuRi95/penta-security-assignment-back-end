@@ -1,6 +1,6 @@
 package com.penta.security.auth.service;
 
-import com.penta.security.auth.vo.CustomUserDetails;
+import com.penta.security.global.vo.CustomUserDetails;
 import com.penta.security.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
 import lombok.RequiredArgsConstructor;

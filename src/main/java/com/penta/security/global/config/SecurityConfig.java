@@ -1,7 +1,7 @@
-package com.penta.security.auth.config;
+package com.penta.security.global.config;
 
-import com.penta.security.auth.handler.CustomAccessDeniedHandler;
-import com.penta.security.auth.handler.CustomAuthenticationEntryPoint;
+import com.penta.security.global.handler.CustomAccessDeniedHandler;
+import com.penta.security.global.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
