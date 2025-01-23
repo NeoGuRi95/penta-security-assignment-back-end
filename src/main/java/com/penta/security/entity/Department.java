@@ -24,10 +24,10 @@ public class Department {
     private Integer empCount;
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptEmp> deptEmps = new ArrayList<>();
+    private List<DeptEmp> deptEmps;
 
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptManager> deptManagers = new ArrayList<>();
+    private List<DeptManager> deptManagers;
 
     // 연관 관계 편의 메서드 start
     public void addDeptEmp(DeptEmp deptEmp) {

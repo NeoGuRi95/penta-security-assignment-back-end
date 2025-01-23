@@ -36,16 +36,16 @@ public class Employee {
     private LocalDate hireDate;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptEmp> deptEmps = new ArrayList<>();
+    private List<DeptEmp> deptEmps;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DeptManager> deptManagers = new ArrayList<>();
+    private List<DeptManager> deptManagers;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Salary> salaries = new ArrayList<>();
+    private List<Salary> salaries;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Title> titles = new ArrayList<>();
+    private List<Title> titles;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private EmployeeDoc employeeDoc;

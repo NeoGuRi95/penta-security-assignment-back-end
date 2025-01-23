@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * 회원 레포지토리
  */
-public interface SystemUserRepository extends JpaRepository<SystemUser, Integer> {
+public interface SystemUserRepository extends JpaRepository<SystemUser, Integer>, SystemUserCustomRepository {
 
     Optional<SystemUser> findByUserId(String userId);
 
