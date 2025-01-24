@@ -36,7 +36,7 @@ public class UserController {
      * @param userId 회원 ID
      * @return 회원 정보
      */
-    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @Secured({"SYSTEM_ADMIN"})
     @GetMapping("/{userId}")
     public ResponseEntity<SystemUserResponseDto> get(@PathVariable String userId) {
         SystemUserResponseDto responseDto = systemUserService.get(userId);
