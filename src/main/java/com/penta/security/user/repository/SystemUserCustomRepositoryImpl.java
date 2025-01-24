@@ -1,7 +1,7 @@
 package com.penta.security.user.repository;
 
-import com.penta.security.entity.QSystemUser;
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.QSystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -9,7 +9,7 @@ import com.penta.security.global.vo.RefreshTokenStore;
 import com.penta.security.global.exception.PasswordIncorrectException;
 import com.penta.security.global.exception.RefreshTokenInvalidException;
 import com.penta.security.user.dto.response.SystemUserResponseDto;
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.penta.security.global.utils.JwtUtil;
 import com.penta.security.user.service.SystemUserService;
 import lombok.RequiredArgsConstructor;

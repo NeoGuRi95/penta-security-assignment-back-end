@@ -2,16 +2,13 @@ package com.penta.security.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 @Transactional

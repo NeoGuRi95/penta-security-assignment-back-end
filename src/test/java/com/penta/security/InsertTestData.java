@@ -1,6 +1,6 @@
 package com.penta.security;
 
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.penta.security.auth.service;
 
 import com.penta.security.global.vo.CustomUserDetails;
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,6 +1,6 @@
 package com.penta.security.user.repository;
 
-import com.penta.security.entity.UserHistory;
+import com.penta.security.global.entity.UserHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

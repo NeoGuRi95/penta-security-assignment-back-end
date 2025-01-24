@@ -1,6 +1,6 @@
 package com.penta.security.global.vo;
 
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

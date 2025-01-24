@@ -4,7 +4,7 @@ import com.penta.security.global.exception.UserIdNotFoundException;
 import com.penta.security.user.dto.request.SystemUserCreateRequestDto;
 import com.penta.security.user.dto.request.SystemUserUpdateRequestDto;
 import com.penta.security.user.dto.response.SystemUserResponseDto;
-import com.penta.security.entity.SystemUser;
+import com.penta.security.global.entity.SystemUser;
 import com.penta.security.user.repository.SystemUserRepository;
 import java.util.List;
 import java.util.Optional;
