@@ -2,6 +2,7 @@ package com.penta.security.employee.repository;
 
 import com.penta.security.employee.dto.response.EmployeeDetailInfoResponseDto;
 import com.penta.security.global.entity.Employee.Gender;
+import com.penta.security.global.entity.QEmployee;
 import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterDto;
 import com.penta.security.search.filter.DateFilter;
@@ -11,37 +12,37 @@ import com.penta.security.search.filter.NumberFilter;
 import com.penta.security.search.filter.SelectFilter;
 import com.penta.security.search.filter.StringFilter;
 import com.penta.security.search.repository.SearchRepository;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import static com.penta.security.global.entity.QEmployee.employee;
 
 @Repository
-@RequiredArgsConstructor
-public class EmployeeSearchRepository extends SearchRepository {
+public class EmployeeSearchRepository extends
+    SearchRepository<QEmployee, EmployeeDetailInfoResponseDto> {
 
-    private final JPAQueryFactory queryFactory;
-    private final FilterRegistry filterRegistry;
+    public EmployeeSearchRepository(JPAQueryFactory queryFactory, FilterRegistry filterRegistry) {
+        super(queryFactory, filterRegistry);
+    }
 
-    @PostConstruct
-    private void init() {
-        String employee = "employee";
-        if (!filterRegistry.isRegistered(employee)) {
-            filterRegistry.register(employee, "empNo", FilterType.NUMBER);
-            filterRegistry.register(employee, "firstName", FilterType.STRING);
-            filterRegistry.register(employee, "lastName", FilterType.STRING);
-            filterRegistry.register(employee, "gender", FilterType.SELECT,
-                EmployeeSearchRepository::getGenderValues);
-            filterRegistry.register(employee, "birthDate", FilterType.DATE);
-            filterRegistry.register(employee, "hireDate", FilterType.DATE);
-        }
+    @Override
+    protected void init() {
+        String entityName = "employee";
+        registerFilters(entityName, Map.of(
+            "empNo", FilterType.NUMBER,
+            "firstName", FilterType.STRING,
+            "lastName", FilterType.STRING,
+            "birthDate", FilterType.DATE,
+            "hireDate", FilterType.DATE
+        ));
+        registerFiltersWithValues(entityName, "gender", FilterType.SELECT,
+            EmployeeSearchRepository::getGenderValues);
     }
 
     public static List<FilterValue> getGenderValues(JPAQueryFactory jpaQueryFactory) {
@@ -54,27 +55,27 @@ public class EmployeeSearchRepository extends SearchRepository {
     }
 
     public List<EmployeeDetailInfoResponseDto> searchFilterSlice(
-        Integer lastEmployeeNo, List<FilterDto> filters
+        Integer lastEmployeeNo,
+        List<FilterDto> filters
     ) {
-        return queryFactory
-            .select(Projections.fields(EmployeeDetailInfoResponseDto.class,
+        return searchFilterSlice(
+            employee,
+            EmployeeDetailInfoResponseDto.class,
+            List.of(
                 employee.empNo,
                 employee.birthDate,
                 employee.firstName,
                 employee.lastName,
                 employee.gender,
-                employee.hireDate))
-            .from(employee)
-            .where(
-                ltEmpNo(lastEmployeeNo),
-                filter(filters)
-            )
-            .orderBy(employee.empNo.desc())
-            .limit(20)
-            .fetch();
+                employee.hireDate
+            ),
+            lastEmployeeNo,
+            filters
+        );
     }
 
-    private BooleanExpression ltEmpNo(Integer empNo) {
+    @Override
+    protected BooleanExpression applyLastIndexFilter(Integer empNo) {
         if (empNo == null) {
             return null;
         }
@@ -82,7 +83,8 @@ public class EmployeeSearchRepository extends SearchRepository {
         return employee.empNo.lt(empNo);
     }
 
-    private BooleanExpression filter(List<FilterDto> filters) {
+    @Override
+    protected BooleanExpression applyFilter(List<FilterDto> filters) {
         if (filters == null || filters.isEmpty()) {
             return null;
         }
@@ -101,5 +103,10 @@ public class EmployeeSearchRepository extends SearchRepository {
             .toList();
 
         return combine(filters, expressions);
+    }
+
+    @Override
+    protected OrderSpecifier<?> applySort() {
+        return employee.empNo.desc();
     }
 }
