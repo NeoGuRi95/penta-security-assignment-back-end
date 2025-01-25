@@ -1,11 +1,8 @@
 package com.penta.security.search.controller;
 
 import com.penta.security.search.dto.FilterComponentDto;
-import com.penta.security.search.filter.Filter;
 import com.penta.security.search.service.SearchService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

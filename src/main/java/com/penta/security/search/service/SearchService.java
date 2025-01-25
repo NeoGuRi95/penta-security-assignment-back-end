@@ -3,7 +3,7 @@ package com.penta.security.search.service;
 import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterComponentDto;
 import com.penta.security.search.dto.FilterPropertyDto;
-import com.penta.security.search.filter.Filter;
+import com.penta.security.search.type.Filter;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Collections;
 import java.util.Map;

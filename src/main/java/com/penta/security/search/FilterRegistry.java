@@ -1,10 +1,11 @@
 package com.penta.security.search;
 
-import com.penta.security.search.filter.*;
+import com.penta.security.search.type.Filter;
+import com.penta.security.search.type.FilterType;
+import com.penta.security.search.type.FilterValue;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

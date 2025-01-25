@@ -1,4 +1,4 @@
-package com.penta.security.search.filter;
+package com.penta.security.search.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -22,7 +22,7 @@ public enum FilterConditionType {
     GREATER_THAN("greaterThan"),
     GREATER_THAN_OR_EQUAL("greaterThanOrEqual"),
     LESS_THAN("lessThan"),
-    LESS_THAN_OT_EQUAL("lessThanOrEqual"),
+    LESS_THAN_OR_EQUAL("lessThanOrEqual"),
     // Date
     IS_BEFORE("isBefore"),
     IS_AFTER("isAfter"),

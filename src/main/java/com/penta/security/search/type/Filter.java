@@ -1,11 +1,10 @@
-package com.penta.security.search.filter;
+package com.penta.security.search.type;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import lombok.Builder;
-import lombok.Data;
 
 @Builder(builderMethodName = "innerBuilder")
 public record Filter(

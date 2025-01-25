@@ -1,4 +1,4 @@
-package com.penta.security.search.filter;
+package com.penta.security.search.type;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
