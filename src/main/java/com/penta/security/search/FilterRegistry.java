@@ -26,15 +26,23 @@ public class FilterRegistry {
         return get(componentName).getOrDefault(propertyName, null);
     }
 
-    public void register(String componentName, String propertyName, FilterType filterType)
+    public void register(
+        String componentName,
+        String propertyName,
+        FilterType filterType
+    )
         throws IllegalArgumentException {
 
-        register(componentName, propertyName, filterType, null);
+        register(componentName, propertyName, filterType, null, null);
     }
 
-    public void register(String componentName, String propertyName, FilterType filterType,
-        Function<JPAQueryFactory, List<FilterValue>> valueFunction)
-        throws IllegalArgumentException {
+    public void register(
+        String componentName,
+        String propertyName,
+        FilterType filterType,
+        Function<JPAQueryFactory, List<FilterValue>> valueFunction,
+        List<FilterValue> defaultFilterValues
+    ) throws IllegalArgumentException {
 
         if (!StringUtils.hasText(componentName)) {
             throw new IllegalArgumentException("The component name is required.");
@@ -46,6 +54,7 @@ public class FilterRegistry {
 
         Filter filter = Filter.builder(componentName, propertyName, filterType)
             .valueFunction(valueFunction)
+            .defaultFilterValues(defaultFilterValues)
             .build();
 
         Map<String, Filter> propMap =

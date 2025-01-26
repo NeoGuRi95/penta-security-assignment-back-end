@@ -11,7 +11,8 @@ public record Filter(
     String componentName,
     String propertyName,
     FilterType type,
-    Function<JPAQueryFactory, List<FilterValue>> valueFunction
+    Function<JPAQueryFactory, List<FilterValue>> valueFunction,
+    List<FilterValue> defaultFilterValues
 ) {
 
     public static class FilterBuilder {

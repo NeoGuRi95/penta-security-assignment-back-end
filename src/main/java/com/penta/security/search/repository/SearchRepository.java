@@ -2,8 +2,6 @@ package com.penta.security.search.repository;
 
 import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterDto;
-import com.penta.security.search.type.FilterType;
-import com.penta.security.search.type.FilterValue;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
@@ -12,40 +10,15 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class SearchRepository<T, R> {
 
     private final JPAQueryFactory queryFactory;
-    private final FilterRegistry filterRegistry;
 
     @PostConstruct
     protected abstract void init();
-
-    protected void registerFilters(
-        String entityName,
-        Map<String, FilterType> filters
-    ) {
-        filters.forEach((property, filterType) -> {
-            if (!filterRegistry.isRegistered(entityName)) {
-                filterRegistry.register(entityName, property, filterType);
-            }
-        });
-    }
-
-    protected void registerFiltersWithValues(
-        String entityName,
-        String property,
-        FilterType filterType,
-        Function<JPAQueryFactory, List<FilterValue>> valueFunction
-    ) {
-        if (!filterRegistry.isRegistered(entityName)) {
-            filterRegistry.register(entityName, property, filterType, valueFunction);
-        }
-    }
 
     protected List<R> searchFilterSlice(
         T entity,

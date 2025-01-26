@@ -7,7 +7,6 @@ import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterDto;
 import com.penta.security.search.filter.DateFilter;
 import com.penta.security.search.type.FilterType;
-import com.penta.security.search.type.FilterValue;
 import com.penta.security.search.filter.NumberFilter;
 import com.penta.security.search.filter.SelectFilter;
 import com.penta.security.search.filter.StringFilter;
@@ -15,10 +14,7 @@ import com.penta.security.search.repository.SearchRepository;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import static com.penta.security.global.entity.QEmployee.employee;
@@ -27,31 +23,23 @@ import static com.penta.security.global.entity.QEmployee.employee;
 public class EmployeeSearchRepository extends
     SearchRepository<QEmployee, EmployeeDetailInfoResponseDto> {
 
+    private final FilterRegistry filterRegistry;
+
     public EmployeeSearchRepository(JPAQueryFactory queryFactory, FilterRegistry filterRegistry) {
-        super(queryFactory, filterRegistry);
+        super(queryFactory);
+        this.filterRegistry = filterRegistry;
     }
 
     @Override
     protected void init() {
         String entityName = "employee";
-        registerFilters(entityName, Map.of(
-            "empNo", FilterType.NUMBER,
-            "firstName", FilterType.STRING,
-            "lastName", FilterType.STRING,
-            "birthDate", FilterType.DATE,
-            "hireDate", FilterType.DATE
-        ));
-        registerFiltersWithValues(entityName, "gender", FilterType.SELECT,
-            EmployeeSearchRepository::getGenderValues);
-    }
-
-    public static List<FilterValue> getGenderValues(JPAQueryFactory jpaQueryFactory) {
-        return Arrays.stream(Gender.values())
-            .map(gender -> FilterValue.builder()
-                .name(gender.getName())
-                .value(gender.getValue())
-                .build())
-            .collect(Collectors.toList());
+        filterRegistry.register(entityName, "empNo", FilterType.NUMBER);
+        filterRegistry.register(entityName, "firstName", FilterType.STRING);
+        filterRegistry.register(entityName, "lastName", FilterType.STRING);
+        filterRegistry.register(entityName, "birthDate", FilterType.DATE);
+        filterRegistry.register(entityName, "hireDate", FilterType.DATE);
+        filterRegistry.register(entityName, "gender", FilterType.SELECT,
+            null, Gender.getGenderValues());
     }
 
     public List<EmployeeDetailInfoResponseDto> searchFilterSlice(

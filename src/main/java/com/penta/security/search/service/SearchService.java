@@ -4,8 +4,10 @@ import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterComponentDto;
 import com.penta.security.search.dto.FilterPropertyDto;
 import com.penta.security.search.type.Filter;
+import com.penta.security.search.type.FilterValue;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,11 +39,20 @@ public class SearchService {
                         .propertyName(e.getKey())
                         .filterType(filter.type())
                         .filterConditionTypes(filter.type().getFilterConditionTypes())
-                        .filterValues(filter.valueFunction() != null
-                            ? filter.valueFunction().apply(jpaQueryFactory)
-                            : Collections.emptyList())
+                        .filterValues(getFilterValues(filter))
                         .build();
                 }).toList())
             .build();
+    }
+
+    public List<FilterValue> getFilterValues(Filter filter) {
+        List<FilterValue> defaultFilterValues = filter.defaultFilterValues();
+        if (defaultFilterValues != null && !defaultFilterValues.isEmpty()) {
+            return defaultFilterValues;
+        }
+        if (filter.valueFunction() != null) {
+            return filter.valueFunction().apply(jpaQueryFactory);
+        }
+        return Collections.emptyList();
     }
 }

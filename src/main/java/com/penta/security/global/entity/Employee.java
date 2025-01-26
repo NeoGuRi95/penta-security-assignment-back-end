@@ -1,7 +1,11 @@
 package com.penta.security.global.entity;
 
+import com.penta.security.search.type.FilterValue;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.*;
 import java.util.List;
 
@@ -63,6 +67,15 @@ public class Employee {
         Gender(String name, String value) {
             this.name = name;
             this.value = value;
+        }
+
+        public static List<FilterValue> getGenderValues() {
+            return Arrays.stream(Gender.values())
+                .map(gender -> FilterValue.builder()
+                    .name(gender.getName())
+                    .value(gender.getValue())
+                    .build())
+                .collect(Collectors.toList());
         }
     }
 
