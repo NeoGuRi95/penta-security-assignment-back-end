@@ -78,10 +78,6 @@ public class EmployeeSearchRepository extends SearchRepository {
 
     @Override
     protected BooleanExpression applyFilter(List<FilterDto> filters) {
-        if (filters == null || filters.isEmpty()) {
-            return null;
-        }
-
         List<BooleanExpression> expressions = new ArrayList<>(filters.stream()
             .map(filter ->
                 switch (filter.getPropertyName()) {
@@ -97,7 +93,7 @@ public class EmployeeSearchRepository extends SearchRepository {
 
         expressions.add(salary1.toDate.eq(LocalDate.of(9999, 1, 1)));
 
-        return combine(filters, expressions);
+        return combine(expressions);
     }
 
     @Override

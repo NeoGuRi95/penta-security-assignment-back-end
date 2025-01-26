@@ -21,25 +21,19 @@ public abstract class SearchRepository {
     protected abstract OrderSpecifier<?> applySort();
 
     protected BooleanExpression combine(
-        List<FilterDto> filter,
         List<BooleanExpression> expressions
     ) {
-
-        if (filter == null || filter.isEmpty()) {
-            return null;
-        }
 
         BooleanExpression resultExp = null;
         int i = 0;
 
         // find first non-null expression
-        for (; i < filter.size() && resultExp == null; ++i) {
+        for (; i < expressions.size() && resultExp == null; i++) {
             resultExp = expressions.get(i);
         }
 
         // operating expressions
-        for (; i < filter.size(); ++i) {
-            FilterDto currFilter = filter.get(i);
+        for (; i < expressions.size(); i++) {
             BooleanExpression currExp = expressions.get(i);
             if (currExp == null) {
                 continue;
