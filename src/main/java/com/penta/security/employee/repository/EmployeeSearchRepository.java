@@ -2,7 +2,6 @@ package com.penta.security.employee.repository;
 
 import com.penta.security.employee.dto.response.EmployeeDetailInfoResponseDto;
 import com.penta.security.global.entity.Employee.Gender;
-import com.penta.security.global.entity.QEmployee;
 import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterDto;
 import com.penta.security.search.filter.DateFilter;
@@ -12,23 +11,24 @@ import com.penta.security.search.filter.SelectFilter;
 import com.penta.security.search.filter.StringFilter;
 import com.penta.security.search.repository.SearchRepository;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import static com.penta.security.global.entity.QEmployee.employee;
+import static com.penta.security.global.entity.QSalary.salary1;
 
 @Repository
-public class EmployeeSearchRepository extends
-    SearchRepository<QEmployee, EmployeeDetailInfoResponseDto> {
+@RequiredArgsConstructor
+public class EmployeeSearchRepository extends SearchRepository {
 
     private final FilterRegistry filterRegistry;
-
-    public EmployeeSearchRepository(JPAQueryFactory queryFactory, FilterRegistry filterRegistry) {
-        super(queryFactory);
-        this.filterRegistry = filterRegistry;
-    }
+    private final JPAQueryFactory queryFactory;
 
     @Override
     protected void init() {
@@ -40,26 +40,31 @@ public class EmployeeSearchRepository extends
         filterRegistry.register(entityName, "hireDate", FilterType.DATE);
         filterRegistry.register(entityName, "gender", FilterType.SELECT,
             null, Gender.getGenderValues());
+        filterRegistry.register(entityName, "salary", FilterType.NUMBER);
     }
 
     public List<EmployeeDetailInfoResponseDto> searchFilterSlice(
         Integer lastEmployeeNo,
         List<FilterDto> filters
     ) {
-        return searchFilterSlice(
-            employee,
-            EmployeeDetailInfoResponseDto.class,
-            List.of(
+        return queryFactory
+            .select(Projections.fields(EmployeeDetailInfoResponseDto.class,
                 employee.empNo,
                 employee.birthDate,
                 employee.firstName,
                 employee.lastName,
                 employee.gender,
-                employee.hireDate
-            ),
-            lastEmployeeNo,
-            filters
-        );
+                employee.hireDate,
+                salary1.salary))
+            .from(employee)
+            .innerJoin(employee.salaries, salary1)
+            .where(
+                applyLastIndexFilter(lastEmployeeNo),
+                applyFilter(filters)
+            )
+            .orderBy(applySort())
+            .limit(20)
+            .fetch();
     }
 
     @Override
@@ -77,7 +82,7 @@ public class EmployeeSearchRepository extends
             return null;
         }
 
-        List<BooleanExpression> expressions = filters.stream()
+        List<BooleanExpression> expressions = new ArrayList<>(filters.stream()
             .map(filter ->
                 switch (filter.getPropertyName()) {
                     case "empNo" -> NumberFilter.filter(employee.empNo, filter);
@@ -88,7 +93,9 @@ public class EmployeeSearchRepository extends
                     case "hireDate" -> DateFilter.filter(employee.hireDate, filter);
                     default -> null;
                 })
-            .toList();
+            .toList());
+
+        expressions.add(salary1.toDate.eq(LocalDate.of(9999, 1, 1)));
 
         return combine(filters, expressions);
     }

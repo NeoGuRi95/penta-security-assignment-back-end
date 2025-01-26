@@ -28,6 +28,8 @@ public class QSalary extends EntityPathBase<Salary> {
 
     public final NumberPath<Integer> salary = createNumber("salary", Integer.class);
 
+    public final DatePath<java.time.LocalDate> toDate = createDate("toDate", java.time.LocalDate.class);
+
     public QSalary(String variable) {
         this(Salary.class, forVariable(variable), INITS);
     }

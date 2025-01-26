@@ -1,6 +1,7 @@
 package com.penta.security.global.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.*;
 
 @Entity
@@ -16,6 +17,9 @@ public class Salary {
 
     @Column(name = "salary", nullable = false)
     private Integer salary;
+
+    @Column(name = "to_date", nullable = false)
+    private LocalDate toDate;
 
     @MapsId("empNo")
     @ManyToOne
