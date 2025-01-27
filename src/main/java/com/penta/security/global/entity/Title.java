@@ -1,7 +1,10 @@
 package com.penta.security.global.entity;
 
+import com.penta.security.search.type.FilterValue;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.*;
 
 @Entity
@@ -21,6 +24,21 @@ public class Title {
     @ManyToOne
     @JoinColumn(name = "emp_no")
     private Employee employee;
+
+    public static List<FilterValue> getTitleValues(JPAQueryFactory queryFactory) {
+        QTitle t = new QTitle("t");
+        return queryFactory
+            .selectDistinct(t.id.title)
+            .from(t)
+            .fetch()
+
+            .stream()
+            .map(title -> FilterValue.builder()
+                .name(title)
+                .value(title)
+                .build())
+            .toList();
+    }
 
     // 연관 관계 편의 메서드 start
     public void setEmployee(Employee employee) {

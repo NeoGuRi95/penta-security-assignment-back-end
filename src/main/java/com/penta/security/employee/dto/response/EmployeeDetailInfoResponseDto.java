@@ -18,6 +18,7 @@ public class EmployeeDetailInfoResponseDto {
     private Gender gender;
     private LocalDate hireDate;
     private Integer salary;
+    private String title;
 
     @Builder
     @QueryProjection
@@ -25,7 +26,7 @@ public class EmployeeDetailInfoResponseDto {
         Integer empNo, LocalDate birthDate,
         String firstName, String lastName,
         Gender gender, LocalDate hireDate,
-        Integer salary
+        Integer salary, String title
     ) {
         this.empNo = empNo;
         this.birthDate = birthDate;
@@ -34,5 +35,6 @@ public class EmployeeDetailInfoResponseDto {
         this.gender = gender;
         this.hireDate = hireDate;
         this.salary = salary;
+        this.title = title;
     }
 }

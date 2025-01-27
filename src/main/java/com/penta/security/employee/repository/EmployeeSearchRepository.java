@@ -2,6 +2,7 @@ package com.penta.security.employee.repository;
 
 import com.penta.security.employee.dto.response.EmployeeDetailInfoResponseDto;
 import com.penta.security.global.entity.Employee.Gender;
+import com.penta.security.global.entity.Title;
 import com.penta.security.search.FilterRegistry;
 import com.penta.security.search.dto.FilterDto;
 import com.penta.security.search.filter.DateFilter;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Repository;
 
 import static com.penta.security.global.entity.QEmployee.employee;
 import static com.penta.security.global.entity.QSalary.salary1;
+import static com.penta.security.global.entity.QTitle.title;
 
 @Repository
 @RequiredArgsConstructor
@@ -41,6 +43,8 @@ public class EmployeeSearchRepository extends SearchRepository {
         filterRegistry.register(entityName, "gender", FilterType.SELECT,
             null, Gender.getGenderValues());
         filterRegistry.register(entityName, "salary", FilterType.NUMBER);
+        filterRegistry.register(entityName, "title", FilterType.SELECT,
+            Title::getTitleValues, null);
     }
 
     public List<EmployeeDetailInfoResponseDto> searchFilterSlice(
@@ -55,9 +59,11 @@ public class EmployeeSearchRepository extends SearchRepository {
                 employee.lastName,
                 employee.gender,
                 employee.hireDate,
-                salary1.salary))
+                salary1.salary,
+                title.id.title))
             .from(employee)
             .innerJoin(employee.salaries, salary1)
+            .innerJoin(employee.titles, title)
             .where(
                 applyLastIndexFilter(lastEmployeeNo),
                 applyFilter(filters)
@@ -87,6 +93,8 @@ public class EmployeeSearchRepository extends SearchRepository {
                     case "lastName" -> StringFilter.filter(employee.lastName, filter);
                     case "gender" -> SelectFilter.filter(employee.gender, filter, Gender.class);
                     case "hireDate" -> DateFilter.filter(employee.hireDate, filter);
+                    case "salary" -> NumberFilter.filter(salary1.salary, filter);
+                    case "title" -> SelectFilter.filter(title.id.title, filter);
                     default -> null;
                 })
             .toList());
