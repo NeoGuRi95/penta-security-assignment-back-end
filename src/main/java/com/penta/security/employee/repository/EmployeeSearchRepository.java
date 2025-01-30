@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.QueryHints;
 import org.springframework.stereotype.Repository;
 
 import static com.penta.security.global.entity.QEmployee.employee;
@@ -78,6 +79,7 @@ public class EmployeeSearchRepository extends SearchRepository {
             )
             .orderBy(applySort())
             .limit(20)
+            .setHint(QueryHints.COMMENT, "JOIN_ORDER(e1_0, s1_0, t1_0, de1_0, d1_0)")
             .fetch();
     }
 
