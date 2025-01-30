@@ -1,6 +1,7 @@
 package com.penta.security.employee.repository;
 
 import com.penta.security.employee.dto.response.EmployeeDetailInfoResponseDto;
+import com.penta.security.global.entity.Department;
 import com.penta.security.global.entity.Employee.Gender;
 import com.penta.security.global.entity.Title;
 import com.penta.security.search.FilterRegistry;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Repository;
 import static com.penta.security.global.entity.QEmployee.employee;
 import static com.penta.security.global.entity.QSalary.salary1;
 import static com.penta.security.global.entity.QTitle.title;
+import static com.penta.security.global.entity.QDeptEmp.deptEmp;
+import static com.penta.security.global.entity.QDepartment.department;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,6 +48,8 @@ public class EmployeeSearchRepository extends SearchRepository {
         filterRegistry.register(entityName, "salary", FilterType.NUMBER);
         filterRegistry.register(entityName, "title", FilterType.SELECT,
             Title::getTitleValues, null);
+        filterRegistry.register(entityName, "deptName", FilterType.SELECT,
+            Department::getDepartmentNames, null);
     }
 
     public List<EmployeeDetailInfoResponseDto> searchFilterSlice(
@@ -60,10 +65,13 @@ public class EmployeeSearchRepository extends SearchRepository {
                 employee.gender,
                 employee.hireDate,
                 salary1.salary,
-                title.id.title))
+                title.id.title,
+                department.deptName))
             .from(employee)
             .innerJoin(employee.salaries, salary1)
             .innerJoin(employee.titles, title)
+            .innerJoin(employee.deptEmps, deptEmp)
+            .innerJoin(deptEmp.department, department)
             .where(
                 applyLastIndexFilter(lastEmployeeNo),
                 applyFilter(filters)
@@ -95,11 +103,14 @@ public class EmployeeSearchRepository extends SearchRepository {
                     case "hireDate" -> DateFilter.filter(employee.hireDate, filter);
                     case "salary" -> NumberFilter.filter(salary1.salary, filter);
                     case "title" -> SelectFilter.filter(title.id.title, filter);
+                    case "deptName" -> SelectFilter.filter(department.deptName, filter);
                     default -> null;
                 })
             .toList());
 
         expressions.add(salary1.toDate.eq(LocalDate.of(9999, 1, 1)));
+        expressions.add(title.toDate.eq(LocalDate.of(9999, 1, 1)));
+        expressions.add(deptEmp.toDate.eq(LocalDate.of(9999, 1, 1)));
 
         return combine(expressions);
     }

@@ -13,8 +13,8 @@ public class QEmployeeDetailInfoResponseDto extends ConstructorExpression<Employ
 
     private static final long serialVersionUID = -1510199718L;
 
-    public QEmployeeDetailInfoResponseDto(com.querydsl.core.types.Expression<Integer> empNo, com.querydsl.core.types.Expression<java.time.LocalDate> birthDate, com.querydsl.core.types.Expression<String> firstName, com.querydsl.core.types.Expression<String> lastName, com.querydsl.core.types.Expression<com.penta.security.global.entity.Employee.Gender> gender, com.querydsl.core.types.Expression<java.time.LocalDate> hireDate, com.querydsl.core.types.Expression<Integer> salary, com.querydsl.core.types.Expression<String> title) {
-        super(EmployeeDetailInfoResponseDto.class, new Class<?>[]{int.class, java.time.LocalDate.class, String.class, String.class, com.penta.security.global.entity.Employee.Gender.class, java.time.LocalDate.class, int.class, String.class}, empNo, birthDate, firstName, lastName, gender, hireDate, salary, title);
+    public QEmployeeDetailInfoResponseDto(com.querydsl.core.types.Expression<Integer> empNo, com.querydsl.core.types.Expression<java.time.LocalDate> birthDate, com.querydsl.core.types.Expression<String> firstName, com.querydsl.core.types.Expression<String> lastName, com.querydsl.core.types.Expression<com.penta.security.global.entity.Employee.Gender> gender, com.querydsl.core.types.Expression<java.time.LocalDate> hireDate, com.querydsl.core.types.Expression<Integer> salary, com.querydsl.core.types.Expression<String> title, com.querydsl.core.types.Expression<String> deptName) {
+        super(EmployeeDetailInfoResponseDto.class, new Class<?>[]{int.class, java.time.LocalDate.class, String.class, String.class, com.penta.security.global.entity.Employee.Gender.class, java.time.LocalDate.class, int.class, String.class, String.class}, empNo, birthDate, firstName, lastName, gender, hireDate, salary, title, deptName);
     }
 
 }
