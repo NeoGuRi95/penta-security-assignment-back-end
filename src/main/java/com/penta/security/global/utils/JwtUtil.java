@@ -21,8 +21,8 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtil {
 
-    // Access Token 만료 시간 1시간
-    private static final long ACCESS_TOKEN_VALID_TIME = (long) 1000 * 60 * 60;
+    // Access Token 만료 시간 5시간
+    private static final long ACCESS_TOKEN_VALID_TIME = (long) 1000 * 60 * 60 * 5;
     // Refresh Token 만료 시간 24시간
     private static final long REFRESH_TOKEN_VALID_TIME = (long) 1000 * 60 * 60 * 24;
 
